@@ -1,5 +1,15 @@
 find_package(CoinUtils)
-find_package(ZLIB)
+find_package(Osi)
+
+set(NAME "CLP")
+parse_ac(VERSION MAJOR MINOR PATCH)
+
+set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
+	"${NAME} check level")
+set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
+	"${NAME} verbosity level")
+configure_file(config.h.cmake.in config.h)
+configure_file(config_clp.h.cmake.in config_clp.h)
 
 set(_SRCS
 	src/ClpCholeskyBase.cpp
@@ -94,9 +104,17 @@ set(_HDRS
 	src/Idiot.hpp)
 
 add_library(Clp ${_SRCS} ${_HDRS})
-target_include_directories(Clp PRIVATE src)
+target_include_directories(Clp PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+target_compile_definitions(Clp PUBLIC
+	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
+	CLP_BUILD HAVE_CONFIG_H)
 if(WIN32)
 	target_compile_definitions(Clp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(Clp PRIVATE CoinUtils::CoinUtils ZLIB::ZLIB)
+target_link_libraries(Clp PRIVATE
+	CoinUtils::CoinUtils)
+set_target_properties(Clp PROPERTIES
+	VERSION ${VERSION})
 add_library(Clp::Clp ALIAS Clp)
