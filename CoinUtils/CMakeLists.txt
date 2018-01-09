@@ -11,6 +11,7 @@ set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
 set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
 	"${NAME} verbosity level")
 configure_file(src/config.h.cmake.in config.h)
+configure_file(src/config_coinutils.h.cmake.in config_coinutils.h)
 
 set(_SRCS
 	src/CoinAlloc.cpp
@@ -133,9 +134,9 @@ set(_HDRS
 	src/CoinRational.hpp)
 
 add_library(CoinUtils ${_SRCS} ${_HDRS})
-target_include_directories(CoinUtils PRIVATE src)
+target_include_directories(CoinUtils PRIVATE
+	src ${CMAKE_CURRENT_BINARY_DIR})
 target_compile_definitions(CoinUtils PUBLIC
-	COIN_HAS_ZLIB
 	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
 	COINUTILS_BUILD HAVE_CONFIG_H)
 if(WIN32)
