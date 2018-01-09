@@ -1,5 +1,16 @@
 find_package(CoinUtils)
-find_package(ZLIB)
+find_package(Osi)
+find_package(OsiClp)
+
+set(NAME "CGL")
+parse_ac(VERSION MAJOR MINOR PATCH)
+
+set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
+	"${NAME} check level")
+set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
+	"${NAME} verbosity level")
+configure_file(config.h.cmake.in config.h)
+configure_file(config_cgl.h.cmake.in config_cgl.h)
 
 set(_SRCS
 	src/CglMixedIntegerRounding/CglMixedIntegerRoundingTest.cpp
@@ -90,9 +101,23 @@ set(_HDRS
 	src/CglTreeInfo.hpp)
 
 add_library(Cgl ${_SRCS} ${_HDRS})
-target_include_directories(Cgl PRIVATE src)
+target_include_directories(Cgl PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglProbing>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglDuplicateRow>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglClique>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglGomory>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+target_compile_definitions(Cgl PRIVATE
+	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
+	CGL_BUILD HAVE_CONFIG_H)
 if(WIN32)
 	target_compile_definitions(Cgl _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(Cgl PRIVATE CoinUtils::CoinUtils ZLIB::ZLIB)
+target_link_libraries(Cgl PUBLIC
+	CoinUtils::CoinUtils
+	Osi::Osi
+	OsiClp::OsiClp)
+set_target_properties(Cgl PROPERTIES
+	VERSION ${VERSION})
 add_library(Cgl::Cgl ALIAS Cgl)
