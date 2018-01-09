@@ -49,7 +49,7 @@ target_compile_definitions(Osi PUBLIC
 if(WIN32)
 	target_compile_definitions(Osi _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(Osi PRIVATE
+target_link_libraries(Osi PUBLIC
 	CoinUtils::CoinUtils)
 set_target_properties(Osi PROPERTIES
 	VERSION ${VERSION})
