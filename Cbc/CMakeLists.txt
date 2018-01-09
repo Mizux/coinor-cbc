@@ -1,9 +1,20 @@
 find_package(CoinUtils)
-find_package(ZLIB)
+find_package(Osi)
+find_package(Clp)
+find_package(Cgl)
+
+set(NAME "CBC")
+parse_ac(VERSION MAJOR MINOR PATCH)
+
+set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
+	"${NAME} check level")
+set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
+	"${NAME} verbosity level")
+configure_file(config.h.cmake.in config.h)
+configure_file(config_cbc.h.cmake.in config_cbc.h)
 
 set(_SRCS
 	#src/CbcBranchBase.cpp
-	src/Cbc_C_Interface.cpp
 	src/CbcBranchAllDifferent.cpp
 	src/CbcBranchCut.cpp
 	src/CbcBranchDecision.cpp
@@ -12,7 +23,6 @@ set(_SRCS
 	src/CbcBranchingObject.cpp
 	src/CbcBranchLotsize.cpp
 	src/CbcBranchToFixLots.cpp
-	src/CbcCbcParam.cpp
 	src/CbcClique.cpp
 	src/CbcCompareDefault.cpp
 	src/CbcCompareDepth.cpp
@@ -61,10 +71,7 @@ set(_SRCS
 	src/CbcHeuristicRENS.cpp
 	src/CbcHeuristicRINS.cpp
 	src/CbcHeuristicVND.cpp
-	src/CbcLinked.cpp
-	src/CbcLinkedUtils.cpp
 	src/CbcMessage.cpp
-	src/CbcMipStartIO.cpp
 	src/CbcModel.cpp
 	src/CbcNode.cpp
 	src/CbcNodeInfo.cpp
@@ -76,21 +83,15 @@ set(_SRCS
 	src/CbcSimpleInteger.cpp
 	src/CbcSimpleIntegerDynamicPseudoCost.cpp
 	src/CbcSimpleIntegerPseudoCost.cpp
-	src/CbcSolverAnalyze.cpp
-	src/CbcSolver.cpp
-	src/CbcSolverExpandKnapsack.cpp
-	src/CbcSolverHeuristics.cpp
 	src/CbcSOS.cpp
 	src/CbcStatistics.cpp
 	src/CbcStrategy.cpp
 	src/CbcSubProblem.cpp
 	src/CbcThread.cpp
 	src/CbcTree.cpp
-	src/CbcTreeLocal.cpp
-	src/unitTestClp.cpp)
+	src/CbcTreeLocal.cpp)
 
 set(_HDRS
-	src/Cbc_C_Interface.h
 	src/CbcBranchActual.hpp
 	src/CbcBranchAllDifferent.hpp
 	src/CbcBranchBase.hpp
@@ -154,20 +155,78 @@ set(_HDRS
 	src/CbcSimpleIntegerDynamicPseudoCost.hpp
 	src/CbcSimpleIntegerPseudoCost.hpp
 	src/CbcStrategy.hpp
-	src/CbcSolver.hpp
-	src/CbcMipStartIO.hpp
 	src/CbcSOS.hpp
 	src/CbcSubProblem.hpp
 	src/CbcTree.hpp
-	src/CbcLinked.hpp
 	src/CbcTreeLocal.hpp
 	src/ClpConstraintAmpl.hpp
 	src/ClpAmplObjective.hpp)
 
 add_library(Cbc ${_SRCS} ${_HDRS})
-target_include_directories(Cbc PRIVATE src)
+target_include_directories(Cbc PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
+target_compile_definitions(Cbc PRIVATE
+	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
+	CBC_BUILD HAVE_CONFIG_H)
 if(WIN32)
 	target_compile_definitions(Cbc _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(Cbc PRIVATE CoinUtils::CoinUtils ZLIB::ZLIB)
+target_link_libraries(Cbc PUBLIC
+	CoinUtils::CoinUtils
+	Osi::Osi
+	Clp::Clp
+	Cgl::Cgl)
+set_target_properties(Cbc PROPERTIES
+	VERSION ${VERSION})
 add_library(Cbc::Cbc ALIAS Cbc)
+
+# OsiCbc
+set(_SRCS src/OsiCbc/OsiCbcSolverInterface.cpp)
+set(_HDRS	src/OsiCbc/OsiCbcSolverInterface.hpp)
+
+add_library(OsiCbc ${_SRCS} ${_HDRS})
+target_include_directories(OsiCbc PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiCbc>)
+#target_compile_definitions(OsiCbc PRIVATE ...)
+if(WIN32)
+	target_compile_definitions(OsiCbc _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif ()
+target_link_libraries(OsiCbc PUBLIC
+	CoinUtils::CoinUtils
+	Osi::Osi
+	Cbc::Cbc)
+set_target_properties(OsiCbc PROPERTIES
+	VERSION ${VERSION})
+add_library(OsiCbc::OsiCbc ALIAS OsiCbc)
+
+# CbcSolver
+set(_SRCS
+	src/Cbc_C_Interface.cpp
+	src/CbcCbcParam.cpp
+	src/CbcLinked.cpp
+	src/CbcLinkedUtils.cpp
+	src/CbcSolverHeuristics.cpp
+	src/CbcSolverAnalyze.cpp
+	src/CbcSolver.cpp
+	src/CbcMipStartIO.cpp
+	src/CbcSolverExpandKnapsack.cpp)
+
+set(_HDRS
+	src/Cbc_C_Interface.h
+	src/CbcLinked.hpp
+	src/CbcSolver.hpp
+	src/CbcMipStartIO.hpp)
+
+add_library(CbcSolver ${_SRCS} ${_HDRS})
+target_include_directories(CbcSolver PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+#target_compile_definitions(CbcSolver PRIVATE ...)
+if(WIN32)
+	target_compile_definitions(CbcSolver _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif ()
+target_link_libraries(CbcSolver PUBLIC
+	Cbc::Cbc)
+set_target_properties(CbcSolver PROPERTIES
+	VERSION ${VERSION})
+add_library(CbcSolver::CbcSolver ALIAS CbcSolver)
