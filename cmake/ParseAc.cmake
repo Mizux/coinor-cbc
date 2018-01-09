@@ -1,0 +1,11 @@
+function(parse_ac VERSION_STRING VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
+  file(READ "configure.ac" IN)
+  # AC_INIT([Cbc],[2.9.9],[url or email])
+	string(REGEX MATCH
+		"AC_INIT\\([^,]+,\\[([0-9]+)\\.([0-9]+)\\.([0-9]+)\\],[^\\)]+\\)" AC_INIT ${IN})
+	#message(STATUS "AC_INIT: ${AC_INIT}")
+	set(${VERSION_MAJOR} ${CMAKE_MATCH_1} PARENT_SCOPE)
+	set(${VERSION_MINOR} ${CMAKE_MATCH_2} PARENT_SCOPE)
+	set(${VERSION_PATCH} ${CMAKE_MATCH_3} PARENT_SCOPE)
+	set(${VERSION_STRING} "${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}" PARENT_SCOPE)
+endfunction()
