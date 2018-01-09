@@ -1,5 +1,7 @@
-#ifndef __CONFIG_COINUTILS_H__
-#define __CONFIG_COINUTILS_H__
+#ifndef __CONFIG_${NAME}_H__
+#define __CONFIG_${NAME}_H__
+
+#define ${NAME}_HAS_CSTDINT 1
 
 /* ${NAME}_VERSION */
 #define ${NAME}_VERSION "${VERSION}"

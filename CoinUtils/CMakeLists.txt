@@ -1,17 +1,12 @@
 set(NAME "COINUTILS")
 parse_ac(VERSION MAJOR MINOR PATCH)
 
-if(HAVE_CSTDINT)
-	set(${NAME}_HAS_CSTDINT "1" CACHE INTERNAL
-		"${NAME} has cstdint")
-endif()
-
 set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
 	"${NAME} check level")
 set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
 	"${NAME} verbosity level")
-configure_file(src/config.h.cmake.in config.h)
-configure_file(src/config_coinutils.h.cmake.in config_coinutils.h)
+configure_file(config.h.cmake.in config.h)
+configure_file(config_coinutils.h.cmake.in config_coinutils.h)
 
 set(_SRCS
 	src/CoinAlloc.cpp
@@ -134,15 +129,18 @@ set(_HDRS
 	src/CoinRational.hpp)
 
 add_library(CoinUtils ${_SRCS} ${_HDRS})
-target_include_directories(CoinUtils PRIVATE
-	src ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(CoinUtils PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
 target_compile_definitions(CoinUtils PUBLIC
 	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
 	COINUTILS_BUILD HAVE_CONFIG_H)
 if(WIN32)
-	target_compile_definitions(CointUtils _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+	target_compile_definitions(CoinUtils _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
 target_link_libraries(CoinUtils PRIVATE
 	ZLIB::ZLIB
 	Threads::Threads)
+set_target_properties(CoinUtils PROPERTIES
+	VERSION ${VERSION})
 add_library(CoinUtils::CoinUtils ALIAS CoinUtils)
