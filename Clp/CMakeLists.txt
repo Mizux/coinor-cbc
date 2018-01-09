@@ -107,14 +107,39 @@ add_library(Clp ${_SRCS} ${_HDRS})
 target_include_directories(Clp PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-target_compile_definitions(Clp PUBLIC
+target_compile_definitions(Clp PRIVATE
 	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
 	CLP_BUILD HAVE_CONFIG_H)
 if(WIN32)
 	target_compile_definitions(Clp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(Clp PRIVATE
-	CoinUtils::CoinUtils)
+target_link_libraries(Clp PUBLIC
+	CoinUtils::CoinUtils
+	Osi::Osi)
 set_target_properties(Clp PROPERTIES
 	VERSION ${VERSION})
 add_library(Clp::Clp ALIAS Clp)
+
+# OsiClp
+
+set(_SRCS
+	src/OsiClp/OsiClpSolverInterface.cpp)
+
+set(_HDRS
+	src/OsiClp/OsiClpSolverInterface.hpp)
+
+add_library(OsiClp ${_SRCS} ${_HDRS})
+target_include_directories(OsiClp PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiClp>)
+#target_compile_definitions(OsiClp PRIVATE ...)
+if(WIN32)
+	target_compile_definitions(OsiClp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif ()
+target_link_libraries(OsiClp PUBLIC
+	CoinUtils::CoinUtils
+	Osi::Osi
+	Clp::Clp)
+set_target_properties(OsiClp PROPERTIES
+	VERSION ${VERSION})
+add_library(OsiClp::OsiClp ALIAS OsiClp)
+
