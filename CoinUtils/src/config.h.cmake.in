@@ -73,15 +73,10 @@
 /* HAVE_CTIME */
 #cmakedefine HAVE_CTIME ${HAVE_CTIME}
 
-/* HAVE_ZLIB_H */
-#cmakedefine HAVE_ZLIB_H ${HAVE_ZLIB_H}
-
-/* COIN_HAS_ZLIB */
-#cmakedefine COIN_HAS_ZLIB "${COIN_HAS_ZLIB}"
 /* COIN_C_FINITE */
-#cmakedefine COIN_C_FINITE "${COIN_C_FINITE}"
+#cmakedefine COIN_C_FINITE ${COIN_C_FINITE}
 /* COIN_C_ISNAN */
-#cmakedefine COIN_C_ISNAN "${COIN_C_ISNAN}"
+#cmakedefine COIN_C_ISNAN ${COIN_C_ISNAN}
 /* COIN_INT64_T */
 #cmakedefine COIN_INT64_T ${COIN_INT64_T}
 /* COIN_UINT64_T */
@@ -98,10 +93,16 @@
 #ifdef HAVE_CSTDINT
   #define ${NAME}_HAS_CSTDINT 1
 #endif
+
 /* ${NAME}_PTHREADS */
 #define ${NAME}_PTHREADS 1
 /* ${NAME}_MEMPOOL_MAXPOOLED */
 #define ${NAME}_MEMPOOL_MAXPOOLED -1
+
+/* HAVE_ZLIB_H */
+#cmakedefine HAVE_ZLIB_H ${HAVE_ZLIB_H}
+/* COIN_HAS_ZLIB */
+#cmakedefine COIN_HAS_ZLIB ${COIN_HAS_ZLIB}
 
 /* PACKAGE */
 #cmakedefine PACKAGE
