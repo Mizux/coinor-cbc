@@ -121,12 +121,8 @@ set_target_properties(Clp PROPERTIES
 add_library(Clp::Clp ALIAS Clp)
 
 # OsiClp
-
-set(_SRCS
-	src/OsiClp/OsiClpSolverInterface.cpp)
-
-set(_HDRS
-	src/OsiClp/OsiClpSolverInterface.hpp)
+set(_SRCS src/OsiClp/OsiClpSolverInterface.cpp)
+set(_HDRS	src/OsiClp/OsiClpSolverInterface.hpp)
 
 add_library(OsiClp ${_SRCS} ${_HDRS})
 target_include_directories(OsiClp PUBLIC
@@ -142,4 +138,3 @@ target_link_libraries(OsiClp PUBLIC
 set_target_properties(OsiClp PROPERTIES
 	VERSION ${VERSION})
 add_library(OsiClp::OsiClp ALIAS OsiClp)
-
