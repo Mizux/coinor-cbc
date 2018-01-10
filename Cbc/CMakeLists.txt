@@ -204,6 +204,7 @@ add_library(OsiCbc::OsiCbc ALIAS OsiCbc)
 set(_SRCS
 	src/Cbc_C_Interface.cpp
 	src/CbcCbcParam.cpp
+	src/Cbc_ampl.cpp
 	src/CbcLinked.cpp
 	src/CbcLinkedUtils.cpp
 	src/CbcSolverHeuristics.cpp
@@ -214,6 +215,7 @@ set(_SRCS
 
 set(_HDRS
 	src/Cbc_C_Interface.h
+	src/Cbc_ampl.h
 	src/CbcLinked.hpp
 	src/CbcSolver.hpp
 	src/CbcMipStartIO.hpp)
