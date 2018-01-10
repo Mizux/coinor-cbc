@@ -138,3 +138,30 @@ target_link_libraries(OsiClp PUBLIC
 set_target_properties(OsiClp PROPERTIES
 	VERSION ${VERSION})
 add_library(OsiClp::OsiClp ALIAS OsiClp)
+
+# ClpSolver
+set(_SRCS
+	src/ClpSolver.cpp
+	src/CbcOrClpParam.cpp
+	src/Clp_ampl.cpp
+	src/MyEventHandler.cpp
+	src/MyMessageHandler.cpp)
+
+set(_HDRS
+	src/CbcOrClpParam.hpp
+	src/Clp_ampl.h
+	src/MyEventHandler.hpp
+	src/MyMessageHandler.hpp)
+
+add_library(ClpSolver ${_SRCS} ${_HDRS})
+target_include_directories(ClpSolver PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+#target_compile_definitions(ClpSolver PRIVATE ...)
+if(WIN32)
+	target_compile_definitions(ClpSolver _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif ()
+target_link_libraries(ClpSolver PUBLIC
+	Clp::Clp)
+set_target_properties(ClpSolver PROPERTIES
+	VERSION ${VERSION})
+add_library(ClpSolver::ClpSolver ALIAS ClpSolver)
