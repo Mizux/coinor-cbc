@@ -58,9 +58,9 @@
 #cmakedefine HAVE_SYS_TYPES_H ${HAVE_SYS_TYPES_H}
 
 /* HAVE_CMATH */
-/*#define STDC_HEADERS 1
-/* HAVE_CCTYPE */
 #cmakedefine HAVE_CMATH ${HAVE_CMATH}
+/* HAVE_CCTYPE */
+#cmakedefine HAVE_CCTYPE ${HAVE_CCTYPE}
 /* HAVE_CINTTYPES */
 #cmakedefine HAVE_CINTTYPES ${HAVE_CINTTYPES}
 /* HAVE_CFLOAT */
