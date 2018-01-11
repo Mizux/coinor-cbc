@@ -1,10 +1,36 @@
 cmake_minimum_required(VERSION 3.0.2)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+		"Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
+		FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
+
+# Not a subproject -> add find_package macro
+if ("^${CMAKE_SOURCE_DIR}$" STREQUAL "^${CMAKE_CURRENT_SOURCE_DIR}$")
+	# Use find_package everywhere, no-op if it's a target
+	macro(find_package)
+		if(NOT TARGET ${ARGV0} AND NOT TARGET ${ARGV0}::${ARGV0})
+			_find_package(${ARGV})
+		else()
+			if(TARGET ${ARGV0})
+				get_target_property(TGT_VER ${ARGV0} VERSION)
+				set(TGT ${ARGV0})
+			else()
+				get_target_property(TGT_VER ${ARGV0}::${ARGV0} VERSION)
+				set(TGT ${ARGV0}::${ARGV0})
+			endif()
+			message(STATUS "Found ${ARGV0}: CMake Target ${TGT} (found version \"${TGT_VER}\")")
+			set(${ARGV0}_FOUND TRUE)
+		endif()
+	endmacro()
+endif()
+
+project(Coin VERSION 2.9.9 LANGUAGES C CXX)
+message(STATUS "Project: Coin")
 
 include(CTest)
 include(ParseAc)
-
-project(Cbc VERSION 2.9.9 LANGUAGES CXX)
 
 # ZLIB
 find_package(ZLIB REQUIRED)
