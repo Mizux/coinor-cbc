@@ -33,4 +33,3 @@ script:
   - cmake --version
   - cmake -H. -Bbuild -DCMAKE_VERBOSE_MAKEFILE=ON
   - cmake --build build --target all
-  - cmake --build build --target test
