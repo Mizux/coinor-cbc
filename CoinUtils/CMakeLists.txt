@@ -6,7 +6,7 @@ parse_ac(VERSION MAJOR MINOR PATCH)
 # PTHREAD
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
-if(Threads_FOUND)
+if(CMAKE_USE_PTHREADS_INIT)
 	set(${NAME}_PTHREADS "1" CACHE INTERNAL "Use pthread")
 endif()
 
@@ -154,7 +154,7 @@ if(ZLIB_FOUND)
 	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)
 endif()
 
-if(Threads_FOUND)
+if(CMAKE_USE_PTHREADS_INIT)
 	target_link_libraries(CoinUtils PRIVATE	Threads::Threads)
 endif()
 
