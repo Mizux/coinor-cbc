@@ -1,5 +1,7 @@
-find_package(CoinUtils)
-find_package(Osi)
+message(STATUS "Subproject: Clp")
+
+find_package(CoinUtils REQUIRED)
+find_package(Osi REQUIRED)
 
 set(NAME "CLP")
 parse_ac(VERSION MAJOR MINOR PATCH)
@@ -61,6 +63,7 @@ set(_SRCS
 
 set(_HDRS
 	src/Clp_C_Interface.h
+	src/ClpConfig.h
 	src/ClpCholeskyBase.hpp
 	src/ClpCholeskyDense.hpp
 	src/ClpConstraint.hpp
@@ -106,10 +109,11 @@ set(_HDRS
 add_library(Clp ${_SRCS} ${_HDRS})
 target_include_directories(Clp PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-target_compile_definitions(Clp PRIVATE
-	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
-	CLP_BUILD HAVE_CONFIG_H)
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+	$<INSTALL_INTERFACE:include/coin>)
+target_compile_definitions(Clp
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CLP_BUILD)
 if(WIN32)
 	target_compile_definitions(Clp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
@@ -117,10 +121,22 @@ target_link_libraries(Clp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi)
 set_target_properties(Clp PROPERTIES
+	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_clp.h"
 	VERSION ${VERSION})
 add_library(Clp::Clp ALIAS Clp)
 
-# OsiClp
+# Install
+include(GNUInstallDirs)
+install(TARGETS Clp
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+
+##############
+##  OsiClp  ##
+##############
 set(_SRCS src/OsiClp/OsiClpSolverInterface.cpp)
 set(_HDRS	src/OsiClp/OsiClpSolverInterface.hpp)
 
@@ -136,10 +152,22 @@ target_link_libraries(OsiClp PUBLIC
 	Osi::Osi
 	Clp::Clp)
 set_target_properties(OsiClp PROPERTIES
+	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
 add_library(OsiClp::OsiClp ALIAS OsiClp)
 
-# ClpSolver
+# Install
+include(GNUInstallDirs)
+install(TARGETS OsiClp
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+
+#################
+##  ClpSolver  ##
+#################
 set(_SRCS
 	src/ClpSolver.cpp
 	src/CbcOrClpParam.cpp
@@ -163,5 +191,15 @@ endif ()
 target_link_libraries(ClpSolver PUBLIC
 	Clp::Clp)
 set_target_properties(ClpSolver PROPERTIES
+	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
 add_library(ClpSolver::ClpSolver ALIAS ClpSolver)
+
+# Install
+include(GNUInstallDirs)
+install(TARGETS ClpSolver
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)

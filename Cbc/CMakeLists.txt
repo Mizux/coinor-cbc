@@ -1,7 +1,9 @@
-find_package(CoinUtils)
-find_package(Osi)
-find_package(Clp)
-find_package(Cgl)
+message(STATUS "Subproject: Cbc")
+
+find_package(CoinUtils REQUIRED)
+find_package(Osi REQUIRED)
+find_package(Clp REQUIRED)
+find_package(Cgl REQUIRED)
 
 set(NAME "CBC")
 parse_ac(VERSION MAJOR MINOR PATCH)
@@ -92,6 +94,7 @@ set(_SRCS
 	src/CbcTreeLocal.cpp)
 
 set(_HDRS
+	src/CbcConfig.h
 	src/CbcBranchActual.hpp
 	src/CbcBranchAllDifferent.hpp
 	src/CbcBranchBase.hpp
@@ -166,9 +169,9 @@ add_library(Cbc ${_SRCS} ${_HDRS})
 target_include_directories(Cbc PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-target_compile_definitions(Cbc PRIVATE
-	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
-	CBC_BUILD HAVE_CONFIG_H)
+target_compile_definitions(Cbc
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CBC_BUILD)
 if(WIN32)
 	target_compile_definitions(Cbc _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
@@ -178,10 +181,22 @@ target_link_libraries(Cbc PUBLIC
 	Clp::Clp
 	Cgl::Cgl)
 set_target_properties(Cbc PROPERTIES
+	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_cbc.h"
 	VERSION ${VERSION})
 add_library(Cbc::Cbc ALIAS Cbc)
 
-# OsiCbc
+# Install
+include(GNUInstallDirs)
+install(TARGETS Cbc
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+
+##############
+##  OsiCbc  ##
+##############
 set(_SRCS src/OsiCbc/OsiCbcSolverInterface.cpp)
 set(_HDRS	src/OsiCbc/OsiCbcSolverInterface.hpp)
 
@@ -197,10 +212,22 @@ target_link_libraries(OsiCbc PUBLIC
 	Osi::Osi
 	Cbc::Cbc)
 set_target_properties(OsiCbc PROPERTIES
+	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
 add_library(OsiCbc::OsiCbc ALIAS OsiCbc)
 
-# CbcSolver
+# Install
+include(GNUInstallDirs)
+install(TARGETS OsiCbc
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+
+#################
+##  CbcSolver  ##
+#################
 set(_SRCS
 	src/Cbc_C_Interface.cpp
 	src/CbcCbcParam.cpp
@@ -223,12 +250,23 @@ set(_HDRS
 add_library(CbcSolver ${_SRCS} ${_HDRS})
 target_include_directories(CbcSolver PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
-#target_compile_definitions(CbcSolver PRIVATE ...)
+target_compile_definitions(CbcSolver
+	PRIVATE CBC_THREAD_SAFE CBC_NO_INTERRUPT)
 if(WIN32)
 	target_compile_definitions(CbcSolver _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
 target_link_libraries(CbcSolver PUBLIC
 	Cbc::Cbc)
 set_target_properties(CbcSolver PROPERTIES
+	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
 add_library(CbcSolver::CbcSolver ALIAS CbcSolver)
+
+# Install
+include(GNUInstallDirs)
+install(TARGETS CbcSolver
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)

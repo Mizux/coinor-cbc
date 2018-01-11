@@ -1,3 +1,5 @@
+message(STATUS "Subproject: CoinUtils")
+
 set(NAME "COINUTILS")
 parse_ac(VERSION MAJOR MINOR PATCH)
 
@@ -69,6 +71,7 @@ set(_SRCS
 
 set(_HDRS
 	src/Coin_C_defines.h
+	src/CoinUtilsConfig.h
 	src/CoinAlloc.hpp
 	src/CoinBuild.hpp
 	src/CoinDenseVector.hpp
@@ -131,10 +134,11 @@ set(_HDRS
 add_library(CoinUtils ${_SRCS} ${_HDRS})
 target_include_directories(CoinUtils PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-target_compile_definitions(CoinUtils PUBLIC
-	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
-	COINUTILS_BUILD HAVE_CONFIG_H)
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+	$<INSTALL_INTERFACE:include/coin>)
+target_compile_definitions(CoinUtils
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE COINUTILS_BUILD)
 if(WIN32)
 	target_compile_definitions(CoinUtils _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
@@ -142,5 +146,15 @@ target_link_libraries(CoinUtils PRIVATE
 	ZLIB::ZLIB
 	Threads::Threads)
 set_target_properties(CoinUtils PROPERTIES
+	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_coinutils.h"
 	VERSION ${VERSION})
 add_library(CoinUtils::CoinUtils ALIAS CoinUtils)
+
+# Install
+include(GNUInstallDirs)
+install(TARGETS CoinUtils
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)

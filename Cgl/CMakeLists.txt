@@ -1,6 +1,8 @@
-find_package(CoinUtils)
-find_package(Osi)
-find_package(OsiClp)
+message(STATUS "Subproject: Cgl")
+
+find_package(CoinUtils REQUIRED)
+find_package(Osi REQUIRED)
+find_package(OsiClp REQUIRED)
 
 set(NAME "CGL")
 parse_ac(VERSION MAJOR MINOR PATCH)
@@ -65,6 +67,7 @@ set(_SRCS
 	src/CglGMI/CglGMIParam.cpp)
 
 set(_HDRS
+	src/CglConfig.h
 	src/CglMixedIntegerRounding/CglMixedIntegerRounding.hpp
 	src/CglDuplicateRow/CglDuplicateRow.hpp
 	src/CglStored.hpp
@@ -122,9 +125,9 @@ target_include_directories(Cgl PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglTwomir>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/CglZeroHalf>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-target_compile_definitions(Cgl PRIVATE
-	CBC_THREAD_SAFE	CBC_NO_INTERRUPT
-	CGL_BUILD HAVE_CONFIG_H)
+target_compile_definitions(Cgl
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CGL_BUILD)
 if(WIN32)
 	target_compile_definitions(Cgl _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
@@ -133,5 +136,15 @@ target_link_libraries(Cgl PUBLIC
 	Osi::Osi
 	OsiClp::OsiClp)
 set_target_properties(Cgl PROPERTIES
+	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_cgl.h"
 	VERSION ${VERSION})
 add_library(Cgl::Cgl ALIAS Cgl)
+
+# Install
+include(GNUInstallDirs)
+install(TARGETS Cgl
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
