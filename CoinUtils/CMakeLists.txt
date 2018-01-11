@@ -3,6 +3,13 @@ message(STATUS "Subproject: CoinUtils")
 set(NAME "COINUTILS")
 parse_ac(VERSION MAJOR MINOR PATCH)
 
+# PTHREAD
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+if(Threads_FOUND)
+	set(${NAME}_PTHREADS "1" CACHE INTERNAL "Use pthread")
+endif()
+
 set(COIN_${NAME}_CHECKLEVEL "0" CACHE INTERNAL
 	"${NAME} check level")
 set(COIN_${NAME}_VERBOSITY "0" CACHE INTERNAL
@@ -146,7 +153,11 @@ endif ()
 if(ZLIB_FOUND)
 	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)
 endif()
-target_link_libraries(CoinUtils PRIVATE	Threads::Threads)
+
+if(Threads_FOUND)
+	target_link_libraries(CoinUtils PRIVATE	Threads::Threads)
+endif()
+
 set_target_properties(CoinUtils PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_coinutils.h"
 	VERSION ${VERSION})
