@@ -142,9 +142,11 @@ target_compile_definitions(CoinUtils
 if(WIN32)
 	target_compile_definitions(CoinUtils _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif ()
-target_link_libraries(CoinUtils PRIVATE
-	ZLIB::ZLIB
-	Threads::Threads)
+
+if(ZLIB_FOUND)
+	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)
+endif()
+target_link_libraries(CoinUtils PRIVATE	Threads::Threads)
 set_target_properties(CoinUtils PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_coinutils.h"
 	VERSION ${VERSION})

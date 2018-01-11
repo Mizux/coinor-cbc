@@ -31,6 +31,6 @@ before_install:
 
 script:
   - cmake --version
-  - cmake -H. -Bbuild
+  - cmake -H. -Bbuild -DCMAKE_VERBOSE_MAKEFILE=ON
   - cmake --build build --target all
   - cmake --build build --target test

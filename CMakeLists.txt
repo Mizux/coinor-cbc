@@ -37,9 +37,11 @@ include(CTest)
 include(ParseAc)
 
 # ZLIB
-find_package(ZLIB REQUIRED)
-set(HAVE_ZLIB_H "1" CACHE INTERNAL "Use zlib")
-set(COIN_HAS_ZLIB "1" CACHE INTERNAL "Use zlib")
+find_package(ZLIB)
+if(ZLIB_FOUND)
+	set(HAVE_ZLIB_H "1" CACHE INTERNAL "Use zlib")
+	set(COIN_HAS_ZLIB "1" CACHE INTERNAL "Use zlib")
+endif()
 
 # PTHREAD
 set(THREADS_PREFER_PTHREAD_FLAG ON)
