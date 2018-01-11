@@ -29,10 +29,6 @@ endif()
 project(Coin VERSION 2.9.9 LANGUAGES C CXX)
 message(STATUS "Project: Coin")
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 include(CTest)
 include(ParseAc)
 

@@ -149,6 +149,7 @@ target_compile_definitions(CoinUtils
 if(WIN32)
 	target_compile_definitions(CoinUtils PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(CoinUtils PUBLIC cxx_std_11)
 
 if(ZLIB_FOUND)
 	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)

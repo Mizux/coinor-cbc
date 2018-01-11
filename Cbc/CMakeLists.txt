@@ -175,6 +175,7 @@ target_compile_definitions(Cbc
 if(WIN32)
 	target_compile_definitions(Cbc PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(Cbc PUBLIC cxx_std_11)
 target_link_libraries(Cbc PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
@@ -207,6 +208,7 @@ target_include_directories(OsiCbc PUBLIC
 if(WIN32)
 	target_compile_definitions(OsiCbc PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(OsiCbc PUBLIC cxx_std_11)
 target_link_libraries(OsiCbc PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
@@ -255,6 +257,7 @@ target_compile_definitions(CbcSolver
 if(WIN32)
 	target_compile_definitions(CbcSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(CbcSolver PUBLIC cxx_std_11)
 target_link_libraries(CbcSolver PUBLIC
 	Cbc::Cbc)
 set_target_properties(CbcSolver PROPERTIES

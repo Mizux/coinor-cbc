@@ -117,6 +117,7 @@ target_compile_definitions(Clp
 if(WIN32)
 	target_compile_definitions(Clp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(Clp PUBLIC cxx_std_11)
 target_link_libraries(Clp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi)
@@ -147,6 +148,7 @@ target_include_directories(OsiClp PUBLIC
 if(WIN32)
 	target_compile_definitions(OsiClp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(OsiClp PUBLIC cxx_std_11)
 target_link_libraries(OsiClp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
@@ -188,6 +190,7 @@ target_include_directories(ClpSolver PUBLIC
 if(WIN32)
 	target_compile_definitions(ClpSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(ClpSolver PUBLIC cxx_std_11)
 target_link_libraries(ClpSolver PUBLIC
 	Clp::Clp)
 set_target_properties(ClpSolver PROPERTIES

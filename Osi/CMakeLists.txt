@@ -53,6 +53,7 @@ target_compile_definitions(Osi
 if(WIN32)
 	target_compile_definitions(Osi PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(Osi PUBLIC cxx_std_11)
 target_link_libraries(Osi PUBLIC
 	CoinUtils::CoinUtils)
 set_target_properties(Osi PROPERTIES

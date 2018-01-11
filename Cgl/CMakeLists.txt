@@ -131,6 +131,7 @@ target_compile_definitions(Cgl
 if(WIN32)
 	target_compile_definitions(Cgl PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
+target_compile_features(Cgl PUBLIC cxx_std_11)
 target_link_libraries(Cgl PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
