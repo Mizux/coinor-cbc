@@ -51,8 +51,8 @@ target_compile_definitions(Osi
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE OSI_BUILD)
 if(WIN32)
-	target_compile_definitions(Osi _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(Osi PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 target_link_libraries(Osi PUBLIC
 	CoinUtils::CoinUtils)
 set_target_properties(Osi PROPERTIES

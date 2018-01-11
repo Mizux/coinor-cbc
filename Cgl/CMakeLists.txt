@@ -129,8 +129,8 @@ target_compile_definitions(Cgl
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE CGL_BUILD)
 if(WIN32)
-	target_compile_definitions(Cgl _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(Cgl PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 target_link_libraries(Cgl PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi

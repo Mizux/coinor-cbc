@@ -147,8 +147,8 @@ target_compile_definitions(CoinUtils
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE COINUTILS_BUILD)
 if(WIN32)
-	target_compile_definitions(CoinUtils _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(CoinUtils PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 
 if(ZLIB_FOUND)
 	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)

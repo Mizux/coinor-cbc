@@ -115,8 +115,8 @@ target_compile_definitions(Clp
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE CLP_BUILD)
 if(WIN32)
-	target_compile_definitions(Clp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(Clp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 target_link_libraries(Clp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi)
@@ -145,8 +145,8 @@ target_include_directories(OsiClp PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiClp>)
 #target_compile_definitions(OsiClp PRIVATE ...)
 if(WIN32)
-	target_compile_definitions(OsiClp _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(OsiClp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 target_link_libraries(OsiClp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
@@ -186,8 +186,8 @@ target_include_directories(ClpSolver PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 #target_compile_definitions(ClpSolver PRIVATE ...)
 if(WIN32)
-	target_compile_definitions(ClpSolver _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif ()
+	target_compile_definitions(ClpSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+endif()
 target_link_libraries(ClpSolver PUBLIC
 	Clp::Clp)
 set_target_properties(ClpSolver PROPERTIES
