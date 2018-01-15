@@ -112,7 +112,7 @@ target_include_directories(Clp PUBLIC
 	$<INSTALL_INTERFACE:include/coin>)
 target_compile_definitions(Clp
 	PUBLIC HAVE_CONFIG_H
-	PRIVATE CLP_BUILD)
+	PRIVATE CLP_BUILD COIN_HAS_CLP)
 if(WIN32)
 	target_compile_definitions(Clp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
@@ -143,7 +143,9 @@ set(_HDRS	src/OsiClp/OsiClpSolverInterface.hpp)
 add_library(OsiClp ${_SRCS} ${_HDRS})
 target_include_directories(OsiClp PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiClp>)
-#target_compile_definitions(OsiClp PRIVATE ...)
+target_compile_definitions(OsiClp
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CLP_BUILD)
 if(WIN32)
 	target_compile_definitions(OsiClp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
