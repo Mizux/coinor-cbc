@@ -204,7 +204,9 @@ set(_HDRS	src/OsiCbc/OsiCbcSolverInterface.hpp)
 add_library(OsiCbc ${_SRCS} ${_HDRS})
 target_include_directories(OsiCbc PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiCbc>)
-#target_compile_definitions(OsiCbc PRIVATE ...)
+target_compile_definitions(OsiCbc
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CBC_BUILD)
 if(WIN32)
 	target_compile_definitions(OsiCbc PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
@@ -254,7 +256,8 @@ add_library(CbcSolver ${_SRCS} ${_HDRS})
 target_include_directories(CbcSolver PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 target_compile_definitions(CbcSolver
-	PRIVATE CBC_THREAD_SAFE CBC_NO_INTERRUPT)
+	PUBLIC HAVE_CONFIG_H
+	PRIVATE CBC_BUILD CBC_THREAD_SAFE CBC_NO_INTERRUPT)
 if(WIN32)
 	target_compile_definitions(CbcSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
