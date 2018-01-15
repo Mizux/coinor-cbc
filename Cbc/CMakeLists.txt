@@ -236,9 +236,10 @@ set(_SRCS
 	src/Cbc_ampl.cpp
 	src/CbcLinked.cpp
 	src/CbcLinkedUtils.cpp
+	src/unitTestClp.cpp
+	src/CbcSolver.cpp
 	src/CbcSolverHeuristics.cpp
 	src/CbcSolverAnalyze.cpp
-	src/CbcSolver.cpp
 	src/CbcMipStartIO.cpp
 	src/CbcSolverExpandKnapsack.cpp)
 
