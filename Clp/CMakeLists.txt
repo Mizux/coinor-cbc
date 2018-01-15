@@ -103,7 +103,6 @@ set(_HDRS
 	src/ClpSimplexDual.hpp
 	src/ClpSimplexPrimal.hpp
 	src/ClpSolve.hpp
-	src/CbcOrClpParam.hpp
 	src/Idiot.hpp)
 
 add_library(Clp ${_SRCS} ${_HDRS})
@@ -181,7 +180,8 @@ set(_HDRS
 	src/CbcOrClpParam.hpp
 	src/Clp_ampl.h
 	src/MyEventHandler.hpp
-	src/MyMessageHandler.hpp)
+	src/MyMessageHandler.hpp
+	src/unitTest.cpp)
 
 add_library(ClpSolver ${_SRCS} ${_HDRS})
 target_include_directories(ClpSolver PUBLIC
