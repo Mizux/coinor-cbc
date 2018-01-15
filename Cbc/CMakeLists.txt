@@ -216,7 +216,7 @@ target_link_libraries(OsiCbc PUBLIC
 set_target_properties(OsiCbc PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
-add_library(OsiCbc::OsiCbc ALIAS OsiCbc)
+add_library(Cbc::OsiCbc ALIAS OsiCbc)
 
 # Install
 include(GNUInstallDirs)
@@ -264,7 +264,7 @@ target_link_libraries(CbcSolver PUBLIC
 set_target_properties(CbcSolver PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
-add_library(CbcSolver::CbcSolver ALIAS CbcSolver)
+add_library(Cbc::CbcSolver ALIAS CbcSolver)
 
 # Install
 include(GNUInstallDirs)

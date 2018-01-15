@@ -155,7 +155,7 @@ target_link_libraries(OsiClp PUBLIC
 set_target_properties(OsiClp PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
-add_library(OsiClp::OsiClp ALIAS OsiClp)
+add_library(Clp::OsiClp ALIAS OsiClp)
 
 # Install
 include(GNUInstallDirs)
@@ -196,7 +196,7 @@ target_link_libraries(ClpSolver PUBLIC
 set_target_properties(ClpSolver PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION})
-add_library(ClpSolver::ClpSolver ALIAS ClpSolver)
+add_library(Clp::ClpSolver ALIAS ClpSolver)
 
 # Install
 include(GNUInstallDirs)
