@@ -135,7 +135,7 @@ target_compile_features(Cgl PUBLIC cxx_std_11)
 target_link_libraries(Cgl PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi
-	OsiClp::OsiClp)
+	Clp::OsiClp)
 set_target_properties(Cgl PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_cgl.h"
 	VERSION ${VERSION})
