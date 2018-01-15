@@ -188,7 +188,7 @@ target_include_directories(ClpSolver PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 target_compile_definitions(ClpSolver
 	PUBLIC HAVE_CONFIG_H
-	PRIVATE CLP_BUILD COIN_USE_CLP)
+	PRIVATE CLP_BUILD COIN_HAS_CLP)
 if(WIN32)
 	target_compile_definitions(ClpSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 endif()
