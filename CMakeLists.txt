@@ -190,6 +190,20 @@ else()
 endif()
 message(STATUS "Found intptr_t: ${COIN_INTPTR_T}")
 
+# config options
+if(MSVC)
+	# Build with multiple processes
+	add_definitions(/MP)
+	# MSVC warning suppressions
+	add_definitions(
+		/wd4065 # switch statement contains 'default' but no 'case' labels
+		/wd4101 # 'identifier' : unreferenced local variable
+		/wd4102 # 'label' : unreferenced label
+		/wd4267 # 'var' : conversion from 'size_t' to 'type', possible loss of data
+		/wd4309 # 'conversion' : truncation of constant value
+		)
+endif()
+
 add_subdirectory(CoinUtils)
 add_subdirectory(Osi)
 add_subdirectory(Clp)
