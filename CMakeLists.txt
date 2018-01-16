@@ -196,11 +196,15 @@ if(MSVC)
 	add_definitions(/MP)
 	# MSVC warning suppressions
 	add_definitions(
+		/wd4018 # 'expression' : signed/unsigned mismatch
 		/wd4065 # switch statement contains 'default' but no 'case' labels
 		/wd4101 # 'identifier' : unreferenced local variable
 		/wd4102 # 'label' : unreferenced label
+		/wd4244 # 'conversion' conversion from 'type1' to 'type2', possible loss of data
 		/wd4267 # 'var' : conversion from 'size_t' to 'type', possible loss of data
 		/wd4309 # 'conversion' : truncation of constant value
+		/wd4805 # 'operation' : unsafe mix of type 'type1' and type 'type2' in operation.
+		/wd4996 # The compiler encountered a deprecated declaration.
 		)
 endif()
 
