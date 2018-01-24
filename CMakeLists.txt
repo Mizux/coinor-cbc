@@ -26,8 +26,8 @@ if ("^${CMAKE_SOURCE_DIR}$" STREQUAL "^${CMAKE_CURRENT_SOURCE_DIR}$")
 	endmacro()
 endif()
 
-project(Coin VERSION 2.9.9 LANGUAGES C CXX)
-message(STATUS "Project: Coin")
+project(Cbc-meta VERSION 2.9.9 LANGUAGES C CXX)
+message(STATUS "Meta Project: Cbc")
 
 include(CTest)
 include(ParseAc)
@@ -213,3 +213,8 @@ add_subdirectory(Osi)
 add_subdirectory(Clp)
 add_subdirectory(Cgl)
 add_subdirectory(Cbc)
+
+include(GNUInstallDirs)
+install(EXPORT Cbc-targets
+	NAMESPACE Cbc::
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Cbc})
