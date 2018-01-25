@@ -142,34 +142,28 @@ add_library(CoinUtils ${_SRCS} ${_HDRS})
 target_include_directories(CoinUtils PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	$<INSTALL_INTERFACE:include/coin>)
+	$<INSTALL_INTERFACE:include/cbc>)
 target_compile_definitions(CoinUtils
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE COINUTILS_BUILD)
-if(WIN32)
-	target_compile_definitions(CoinUtils PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif()
 target_compile_features(CoinUtils PUBLIC cxx_std_11)
-
 if(ZLIB_FOUND)
 	target_link_libraries(CoinUtils PRIVATE	ZLIB::ZLIB)
 endif()
-
 if(CMAKE_USE_PTHREADS_INIT)
 	target_link_libraries(CoinUtils PRIVATE	Threads::Threads)
 endif()
 
 set_target_properties(CoinUtils PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_coinutils.h"
-	VERSION ${VERSION})
+	VERSION ${VERSION}
+	SOVERSION ${MAJOR})
 add_library(CoinUtils::CoinUtils ALIAS CoinUtils)
 
 # Install
-include(GNUInstallDirs)
 install(TARGETS CoinUtils
-	EXPORT Cbc-targets
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	EXPORT CbcTargets
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cbc
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)

@@ -109,28 +109,24 @@ add_library(Clp ${_SRCS} ${_HDRS})
 target_include_directories(Clp PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	$<INSTALL_INTERFACE:include/coin>)
+	$<INSTALL_INTERFACE:include/cbc>)
 target_compile_definitions(Clp
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE CLP_BUILD COIN_HAS_CLP)
-if(WIN32)
-	target_compile_definitions(Clp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif()
 target_compile_features(Clp PUBLIC cxx_std_11)
 target_link_libraries(Clp PUBLIC
 	CoinUtils::CoinUtils
 	Osi::Osi)
 set_target_properties(Clp PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_clp.h"
-	VERSION ${VERSION})
+	VERSION ${VERSION}
+	SOVERSION ${MAJOR})
 add_library(Clp::Clp ALIAS Clp)
 
 # Install
-include(GNUInstallDirs)
 install(TARGETS Clp
-	EXPORT Cbc-targets
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	EXPORT CbcTargets
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cbc
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)
@@ -143,13 +139,11 @@ set(_HDRS	src/OsiClp/OsiClpSolverInterface.hpp)
 
 add_library(OsiClp ${_SRCS} ${_HDRS})
 target_include_directories(OsiClp PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiClp>)
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/OsiClp>
+	$<INSTALL_INTERFACE:include/cbc>)
 target_compile_definitions(OsiClp
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE CLP_BUILD)
-if(WIN32)
-	target_compile_definitions(OsiClp PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif()
 target_compile_features(OsiClp PUBLIC cxx_std_11)
 target_link_libraries(OsiClp PUBLIC
 	CoinUtils::CoinUtils
@@ -157,15 +151,14 @@ target_link_libraries(OsiClp PUBLIC
 	Clp::Clp)
 set_target_properties(OsiClp PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
-	VERSION ${VERSION})
+	VERSION ${VERSION}
+	SOVERSION ${MAJOR})
 add_library(Clp::OsiClp ALIAS OsiClp)
 
 # Install
-include(GNUInstallDirs)
 install(TARGETS OsiClp
-	EXPORT Cbc-targets
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	EXPORT CbcTargets
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cbc
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)
@@ -189,27 +182,24 @@ set(_HDRS
 
 add_library(ClpSolver ${_SRCS} ${_HDRS})
 target_include_directories(ClpSolver PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<INSTALL_INTERFACE:include/cbc>)
 target_compile_definitions(ClpSolver
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE CLP_BUILD COIN_HAS_CLP)
-if(WIN32)
-	target_compile_definitions(ClpSolver PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif()
 target_compile_features(ClpSolver PUBLIC cxx_std_11)
 target_link_libraries(ClpSolver PUBLIC
 	Clp::Clp)
 set_target_properties(ClpSolver PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
-	VERSION ${VERSION})
+	VERSION ${VERSION}
+	SOVERSION ${MAJOR})
 add_library(Clp::ClpSolver ALIAS ClpSolver)
 
 # Install
-include(GNUInstallDirs)
 install(TARGETS ClpSolver
-	EXPORT Cbc-targets
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	EXPORT CbcTargets
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cbc
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)

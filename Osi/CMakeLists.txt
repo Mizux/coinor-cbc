@@ -46,27 +46,23 @@ add_library(Osi ${_SRCS} ${_HDRS})
 target_include_directories(Osi PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/Osi>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-	$<INSTALL_INTERFACE:include/coin>)
+	$<INSTALL_INTERFACE:include/cbc>)
 target_compile_definitions(Osi
 	PUBLIC HAVE_CONFIG_H
 	PRIVATE OSI_BUILD)
-if(WIN32)
-	target_compile_definitions(Osi PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
-endif()
 target_compile_features(Osi PUBLIC cxx_std_11)
 target_link_libraries(Osi PUBLIC
 	CoinUtils::CoinUtils)
 set_target_properties(Osi PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_osi.h"
-	VERSION ${VERSION})
+	VERSION ${VERSION}
+	SOVERSION ${MAJOR})
 add_library(Osi::Osi ALIAS Osi)
 
 # Install
-include(GNUInstallDirs)
 install(TARGETS Osi
-	EXPORT Cbc-targets
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/coin/
+	EXPORT CbcTargets
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cbc
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)

@@ -1,0 +1,12 @@
+## Cbc CMake configuration file
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(ZLIB REQUIRED NO_MODULE)
+
+include("${CMAKE_CURRENT_LIST_DIR}/CbcTargets.cmake")
+
+check_required_components(OsiCbc)
+check_required_components(CbcSolver)
+check_required_components(OsiClp)
+check_required_components(ClpSolver)

@@ -194,6 +194,7 @@ message(STATUS "Found intptr_t: ${COIN_INTPTR_T}")
 if(MSVC)
 	# Build with multiple processes
 	add_definitions(/MP)
+	add_definitions(_CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
 	# MSVC warning suppressions
 	add_definitions(
 		/wd4018 # 'expression' : signed/unsigned mismatch
@@ -208,13 +209,27 @@ if(MSVC)
 		)
 endif()
 
+include(GNUInstallDirs)
+
 add_subdirectory(CoinUtils)
 add_subdirectory(Osi)
 add_subdirectory(Clp)
 add_subdirectory(Cgl)
 add_subdirectory(Cbc)
 
-include(GNUInstallDirs)
-install(EXPORT Cbc-targets
+install(EXPORT CbcTargets
 	NAMESPACE Cbc::
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Cbc})
+	DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Cbc")
+include(CMakePackageConfigHelpers)
+configure_package_config_file(CbcConfig.cmake.in
+	"${PROJECT_BINARY_DIR}/CbcConfig.cmake"
+	INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Cbc")
+write_basic_package_version_file(
+	"${PROJECT_BINARY_DIR}/CbcConfigVersion.cmake"
+	COMPATIBILITY SameMajorVersion)
+install(
+	FILES
+	"${PROJECT_BINARY_DIR}/CbcConfig.cmake"
+	"${PROJECT_BINARY_DIR}/CbcConfigVersion.cmake"
+	DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Cbc"
+	COMPONENT Devel)
