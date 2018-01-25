@@ -194,7 +194,7 @@ message(STATUS "Found intptr_t: ${COIN_INTPTR_T}")
 if(MSVC)
 	# Build with multiple processes
 	add_definitions(/MP)
-	add_definitions(_CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE)
+	add_definitions(/D_CRT_SECURE_NO_WARNINGS /D_CRT_SECURE_NO_DEPRECATE)
 	# MSVC warning suppressions
 	add_definitions(
 		/wd4018 # 'expression' : signed/unsigned mismatch
