@@ -32,7 +32,7 @@ docker_alpine: cache/alpine/docker_devel.tar
 docker_ubuntu: cache/ubuntu/docker_devel.tar
 cache/%/docker_devel.tar: cmake/docker/%/Dockerfile cmake/docker/%/setup.sh
 	mkdir -p cache/$*
-	docker image rm -f ${PROJECT}_$*:devel 2>/dev/null
+	@docker image rm -f ${PROJECT}_$*:devel 2>/dev/null
 	docker build --no-cache -t ${PROJECT}_$*:devel -f $< cmake/docker/$*
 	docker save ${PROJECT}_$*:devel -o $@
 
@@ -48,7 +48,9 @@ bash_ubuntu: cache/ubuntu/docker_devel.tar
 configure: configure_alpine configure_ubuntu
 configure_alpine: cache/alpine/configure.log
 configure_ubuntu: cache/ubuntu/configure.log
-cache/%/configure.log: cache/%/docker_devel.tar CMakeLists.txt cmake/*Config.cmake.in
+cache/%/configure.log: cache/%/docker_devel.tar \
+	CMakeLists.txt */CMakeLists.txt \
+	cmake/*.cmake cmake/*Config.cmake.in
 	@docker load -i $<
 	${DOCKER_DEVEL_CMD} ${PROJECT}_$*:devel /bin/sh -c "cmake -H. -Bcache/$*"
 	@date > $@
@@ -74,22 +76,22 @@ cache/%/test.log: cache/%/build.log
 # INSTALL
 .PHONY: install install_alpine install_ubuntu
 install: install_ubuntu
-install_alpine: cache/alpine/docker_install.tar
-install_ubuntu: cache/ubuntu/docker_install.tar
-.PRECIOUS: cache/%/install
-cache/%/install: cache/%/build.log
+install_alpine: cache/alpine/install.log
+install_ubuntu: cache/ubuntu/install.log
+cache/%/install.log: cmake/docker/%/InstallDockerfile cache/%/build.log
 	${DOCKER_DEVEL_CMD} ${PROJECT}_$*:devel /bin/sh -c "cmake --build cache/$* --target install -- DESTDIR=install"
-
-cache/%/docker_install.tar: cmake/docker/%/InstallDockerfile cache/%/install
-	docker image rm -f ${PROJECT}_$*:install 2>/dev/null
+	@docker image rm -f ${PROJECT}_$*:install 2>/dev/null
 	docker build --no-cache -t ${PROJECT}_$*:install -f $< .
-	docker save ${PROJECT}_$*:install -o $@
+	docker save ${PROJECT}_$*:install -o cache/$*/docker_install.tar
+	@date > $@
 
 # DOCKER BASH INSTALL
 .PHONY: bash_install_alpine bash_install_ubuntu
-bash_install_alpine: cache/alpine/docker_install.tar
+bash_install_alpine: cache/alpine/install.log
+	@docker load -i cache/alpine/docker_install.tar
 	${DOCKER_INSTALL_CMD} ${PROJECT}_alpine:install /bin/sh
-bash_install_ubuntu: cache/ubuntu/docker_install.tar
+bash_install_ubuntu: cache/ubuntu/install.log
+	@docker load -i cache/ubuntu/docker_install.tar
 	${DOCKER_INSTALL_CMD} ${PROJECT}_ubuntu:install /bin/bash
 
 # TEST INSTALL of ProjectConfigs.cmake
@@ -97,8 +99,8 @@ bash_install_ubuntu: cache/ubuntu/docker_install.tar
 test_install: test_install_alpine test_install_archlinux test_install_ubuntu
 test_install_alpine: cache/alpine/test_install.log
 test_install_ubuntu: cache/ubuntu/test_install.log
-cache/%/test_install.log: cache/%/docker_install.tar cmake/sample
-	@docker load -i $<
+cache/%/test_install.log: cache/%/install.log cmake/sample
+	@docker load -i cache/$*/docker_install.tar
 	${DOCKER_INSTALL_CMD} -w /project ${PROJECT}_$*:install /bin/sh -c "cmake -H. -B/cache; cmake --build /cache"
 	@date > $@
 
@@ -114,7 +116,7 @@ clean-%:: cache/%/docker_devel.tar
 	@rm -f cache/$*/test.log
 	@rm -f cache/$*/build.log
 	@rm -f cache/$*/configure.log
-	@rm -f cache/$*/docker_install.tar
+	@rm -f cache/$*/install.log
 	@rm -f cache/$*/test_install.log
 
 # DISTCLEAN
