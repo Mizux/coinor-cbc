@@ -52,12 +52,12 @@ target_compile_definitions(Osi
 	PRIVATE OSI_BUILD)
 target_compile_features(Osi PUBLIC cxx_std_11)
 target_link_libraries(Osi PUBLIC
-	CoinUtils::CoinUtils)
+	Cbc::CoinUtils)
 set_target_properties(Osi PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_osi.h"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(Osi::Osi ALIAS Osi)
+add_library(Cbc::Osi ALIAS Osi)
 
 # Install
 install(TARGETS Osi

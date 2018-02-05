@@ -115,13 +115,13 @@ target_compile_definitions(Clp
 	PRIVATE CLP_BUILD COIN_HAS_CLP)
 target_compile_features(Clp PUBLIC cxx_std_11)
 target_link_libraries(Clp PUBLIC
-	CoinUtils::CoinUtils
-	Osi::Osi)
+	Cbc::CoinUtils
+	Cbc::Osi)
 set_target_properties(Clp PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_clp.h"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(Clp::Clp ALIAS Clp)
+add_library(Cbc::Clp ALIAS Clp)
 
 # Install
 install(TARGETS Clp
@@ -146,14 +146,14 @@ target_compile_definitions(OsiClp
 	PRIVATE CLP_BUILD)
 target_compile_features(OsiClp PUBLIC cxx_std_11)
 target_link_libraries(OsiClp PUBLIC
-	CoinUtils::CoinUtils
-	Osi::Osi
-	Clp::Clp)
+	Cbc::CoinUtils
+	Cbc::Osi
+	Cbc::Clp)
 set_target_properties(OsiClp PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(Clp::OsiClp ALIAS OsiClp)
+add_library(Cbc::OsiClp ALIAS OsiClp)
 
 # Install
 install(TARGETS OsiClp
@@ -189,12 +189,12 @@ target_compile_definitions(ClpSolver
 	PRIVATE CLP_BUILD COIN_HAS_CLP)
 target_compile_features(ClpSolver PUBLIC cxx_std_11)
 target_link_libraries(ClpSolver PUBLIC
-	Clp::Clp)
+	Cbc::Clp)
 set_target_properties(ClpSolver PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(Clp::ClpSolver ALIAS ClpSolver)
+add_library(Cbc::ClpSolver ALIAS ClpSolver)
 
 # Install
 install(TARGETS ClpSolver

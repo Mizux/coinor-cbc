@@ -131,14 +131,14 @@ target_compile_definitions(Cgl
 	PRIVATE CGL_BUILD)
 target_compile_features(Cgl PUBLIC cxx_std_11)
 target_link_libraries(Cgl PUBLIC
-	CoinUtils::CoinUtils
-	Osi::Osi
-	Clp::OsiClp)
+	Cbc::CoinUtils
+	Cbc::Osi
+	Cbc::OsiClp)
 set_target_properties(Cgl PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_cgl.h"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(Cgl::Cgl ALIAS Cgl)
+add_library(Cbc::Cgl ALIAS Cgl)
 
 # Install
 include(GNUInstallDirs)

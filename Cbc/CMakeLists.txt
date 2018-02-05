@@ -175,10 +175,10 @@ target_compile_definitions(Cbc
 	PRIVATE CBC_BUILD)
 target_compile_features(Cbc PUBLIC cxx_std_11)
 target_link_libraries(Cbc PUBLIC
-	CoinUtils::CoinUtils
-	Osi::Osi
-	Clp::Clp
-	Cgl::Cgl)
+	Cbc::CoinUtils
+	Cbc::Osi
+	Cbc::Clp
+	Cbc::Cgl)
 set_target_properties(Cbc PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_cbc.h"
 	VERSION ${VERSION}
@@ -208,8 +208,8 @@ target_compile_definitions(OsiCbc
 	PRIVATE CBC_BUILD)
 target_compile_features(OsiCbc PUBLIC cxx_std_11)
 target_link_libraries(OsiCbc PUBLIC
-	CoinUtils::CoinUtils
-	Osi::Osi
+	Cbc::CoinUtils
+	Cbc::Osi
 	Cbc::Cbc)
 set_target_properties(OsiCbc PROPERTIES
 	PUBLIC_HEADER "${_HDRS}"

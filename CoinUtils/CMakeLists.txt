@@ -158,7 +158,7 @@ set_target_properties(CoinUtils PROPERTIES
 	PUBLIC_HEADER "${_HDRS};${CMAKE_CURRENT_BINARY_DIR}/config_coinutils.h"
 	VERSION ${VERSION}
 	SOVERSION ${MAJOR})
-add_library(CoinUtils::CoinUtils ALIAS CoinUtils)
+add_library(Cbc::CoinUtils ALIAS CoinUtils)
 
 # Install
 install(TARGETS CoinUtils
