@@ -101,7 +101,7 @@ test_install_alpine: cache/alpine/test_install.log
 test_install_ubuntu: cache/ubuntu/test_install.log
 cache/%/test_install.log: cache/%/install.log cmake/sample
 	@docker load -i cache/$*/docker_install.tar
-	${DOCKER_INSTALL_CMD} -w /project ${PROJECT}_$*:install /bin/sh -c "cmake -H. -B/cache; cmake --build /cache"
+	${DOCKER_INSTALL_CMD} ${PROJECT}_$*:install /bin/sh -c "cmake -H. -B/cache; cmake --build /cache"
 	@date > $@
 
 # CLEAN
