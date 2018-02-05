@@ -31,12 +31,12 @@ Thus the project layout is as follow:
 │   └── CMakeLists.txt
 ├── Osi
 │   └── CMakeLists.txt
-├── Clp
-│   └── CMakeLists.txt
 ├── Cgl
 │   └── CMakeLists.txt
+├── Clp
+│   └── CMakeLists.txt // Define Clp OsiClp & ClpSolver
 └── Cbc
-    └── CMakeLists.txt
+    └── CMakeLists.txt // Define Cbc OsiCbc & CbcSolver
 ```
 
 # C++ Project Build
