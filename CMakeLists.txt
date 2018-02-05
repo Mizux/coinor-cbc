@@ -39,6 +39,15 @@ if(ZLIB_FOUND)
 	set(COIN_HAS_ZLIB "1" CACHE INTERNAL "Use zlib")
 endif()
 
+# PThread
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+if(CMAKE_USE_PTHREADS_INIT)
+	set(PTHREADS_FOUND TRUE)
+else()
+	set(PTHREADS_FOUND FALSE)
+endif()
+
 # Flags
 include (CheckIncludeFile)
 check_include_file(math.h HAVE_MATH_H)
