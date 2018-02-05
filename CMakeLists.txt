@@ -221,7 +221,7 @@ install(EXPORT CbcTargets
 	NAMESPACE Cbc::
 	DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Cbc")
 include(CMakePackageConfigHelpers)
-configure_package_config_file(CbcConfig.cmake.in
+configure_package_config_file(cmake/CbcConfig.cmake.in
 	"${PROJECT_BINARY_DIR}/CbcConfig.cmake"
 	INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Cbc")
 write_basic_package_version_file(

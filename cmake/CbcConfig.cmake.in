@@ -1,0 +1,7 @@
+## Cbc CMake configuration file
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(ZLIB NO_MODULE)
+
+include("${CMAKE_CURRENT_LIST_DIR}/CbcTargets.cmake")
