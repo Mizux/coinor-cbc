@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.8.2)
 project(Sample VERSION 1.0.0 LANGUAGES CXX)
 
+include(CTest)
 find_package(Cbc REQUIRED)
 
 add_executable(sample main.cpp)
@@ -10,6 +11,10 @@ target_link_libraries(sample PUBLIC
 	Cbc::OsiCbc	Cbc::CbcSolver
 	Cbc::OsiClp	Cbc::ClpSolver
 	)
+
+if(BUILD_TESTING)
+	add_test(NAME sample_UT COMMAND sample)
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS sample
