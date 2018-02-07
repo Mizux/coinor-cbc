@@ -68,7 +68,7 @@ cache/%/build.log: cache/%/configure.log CoinUtils Osi Clp Cgl Cbc
 
 # TEST
 .PHONY: test test_alpine test_ubuntu
-test: test_ubuntu
+test: test_alpine test_ubuntu
 test_alpine: cache/alpine/test.log
 test_ubuntu: cache/ubuntu/test.log
 cache/%/test.log: cache/%/build.log
@@ -78,7 +78,7 @@ cache/%/test.log: cache/%/build.log
 
 # INSTALL
 .PHONY: install install_alpine install_ubuntu
-install: install_ubuntu
+install: install_alpine install_ubuntu
 install_alpine: cache/alpine/install.log
 install_ubuntu: cache/ubuntu/install.log
 cache/%/install.log: cmake/docker/%/InstallDockerfile cache/%/build.log
