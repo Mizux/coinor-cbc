@@ -2,15 +2,14 @@ cmake_minimum_required(VERSION 3.8.2)
 project(Sample VERSION 1.0.0 LANGUAGES CXX)
 
 include(CTest)
-find_package(Cbc REQUIRED)
+find_package(Cbc CONFIG REQUIRED)
 
 add_executable(sample main.cpp)
 target_compile_features(sample PUBLIC cxx_std_11)
 set_target_properties(sample PROPERTIES VERSION ${PROJECT_VERSION})
-target_link_libraries(sample PUBLIC
+target_link_libraries(sample PRIVATE
 	Cbc::OsiCbc	Cbc::CbcSolver
-	Cbc::OsiClp	Cbc::ClpSolver
-	)
+	Cbc::OsiClp	Cbc::ClpSolver)
 
 if(BUILD_TESTING)
 	add_test(NAME sample_UT COMMAND sample)
