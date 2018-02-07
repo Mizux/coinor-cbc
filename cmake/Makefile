@@ -96,7 +96,7 @@ bash_install_ubuntu: cache/ubuntu/install.log
 
 # TEST INSTALL of ProjectConfigs.cmake
 .PHONY: test_install test_install_alpine bash_isntall_ubuntu
-test_install: test_install_alpine test_install_archlinux test_install_ubuntu
+test_install: test_install_alpine test_install_ubuntu
 test_install_alpine: cache/alpine/test_install.log
 test_install_ubuntu: cache/ubuntu/test_install.log
 cache/%/test_install.log: cache/%/install.log cmake/sample
